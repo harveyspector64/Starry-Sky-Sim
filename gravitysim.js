@@ -52,6 +52,7 @@ canvas.addEventListener('mouseup', handleInputEnd);
 let startX, startY;
 
 function handlePan(event) {
+    if (event.isFinal) return; // Prevent execution on mouse-up/touchend
     console.log('Pan event triggered', event);
     const initialVelocityX = event.deltaX * 0.1; // Adjust this factor as needed
     const initialVelocityY = event.deltaY * 0.1;
@@ -78,8 +79,8 @@ function handleInputEnd(event) {
 
 // Helper function to calculate initial velocity based on distance
 function calculateInitialVelocity(x, y) {
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
+  const centerX = x; // Use the clicked x-coordinate
+  const centerY = y; // Use the clicked y-coordinate
   const dx = centerX - x;
   const dy = centerY - y;
   const distance = Math.sqrt(dx * dx + dy * dy);
