@@ -7,10 +7,8 @@ const hammer = new Hammer(canvas);
 // Get the 2D drawing context of the canvas
 const ctx = canvas.getContext('2d');
 
-/*
 // Add a listener for the 'pan' event using Hammer.js
 hammer.on('pan', handlePan);
-*/
 
 // Define variables for particles and simulation settings
 const particles = [];
@@ -43,6 +41,12 @@ canvas.addEventListener('click', handleInputStart);
 canvas.addEventListener('mouseup', handleInputEnd);
 
 let startX, startY;
+
+function handlePan(event) {
+    const initialVelocityX = event.deltaX * 0.1; // Adjust this factor as needed
+    const initialVelocityY = event.deltaY * 0.1;
+    createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
+}
 
 function handleInputStart(event) {
     let rect = canvas.getBoundingClientRect();
