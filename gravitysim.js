@@ -10,11 +10,14 @@ const ctx = canvas.getContext('2d');
 // Add a listener for the 'pan' event using Hammer.js
 hammer.on('pan', handlePan);
 
-//Event listener added to canvas for touchmove events preventing scrolling on ios
-canvas.addEventListener('touchmove', function(event) {
-    event.preventDefault(); // Prevent scrolling on touch
-}, { passive: false });
+// Replaced old event listener for touchmove that stops ios scrolling with this
+function preventDefaultBehavior(e) {
+    e.preventDefault();
+}
 
+['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(function(event) {
+    canvas.addEventListener(event, preventDefaultBehavior, { passive: false });
+});
 
 // Define variables for particles and simulation settings
 const particles = [];
