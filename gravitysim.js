@@ -1,5 +1,7 @@
 const canvas = document.getElementById('gravityCanvas');
 const ctx = canvas.getContext('2d');
+const canvas = document.getElementById('gravityCanvas');
+const hammer = new Hammer(canvas);
 
 const particles = [];
 const numParticles = 5000;
@@ -25,12 +27,18 @@ const constellationStars = [
   // Add more star coordinates as needed for your constellation
 ];
 
-
 // Start listening for user input
 canvas.addEventListener('click', handleInputStart);
-canvas.addEventListener('touchstart', handleInputStart);
-canvas.addEventListener('touchend', handleInputEnd);
 canvas.addEventListener('mouseup', handleInputEnd);
+
+//this line to listen for the "pan" event
+hammer.on('pan', handlePan);
+
+function handlePan(event) {
+    const initialVelocityX = event.deltaX * 0.1; // Adjust this factor as needed
+    const initialVelocityY = event.deltaY * 0.1;
+    createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
+}
 
 let startX, startY;
 
