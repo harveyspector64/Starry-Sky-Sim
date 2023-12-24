@@ -181,25 +181,38 @@ function drawParticles() {
 }
 
 function createMeteor(x, y, vx = 0, vy = 0) {
-    let angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x);
-    const meteorSpeed = 5; // Speed of the meteor
-    const tailLength = 50; // Number of particles in the tail
-    const tailSizeDecrement = 0.95; // Decrease size of tail particles
-    const initialTailSize = 2; // Initial size of tail particles
+    // Define characteristics of the meteor
+    const meteorSpeed = 5; // Base speed of the meteor
+    const tailLength = 50; // Number of particles in the meteor's tail
+    const tailSizeDecrement = 0.95; // Factor by which the tail particle size decreases
+    const initialTailSize = 2; // Initial size of the tail particles
 
-    // Combine initial velocity with default speed
+    // Calculate combined velocity for the meteor
+    const angle = Math.atan2(vy, vx); // Calculate the angle of the initial velocity
     const combinedVx = vx + meteorSpeed * Math.cos(angle);
     const combinedVy = vy + meteorSpeed * Math.sin(angle);
 
     // Create the fiery tail of the meteor
     for (let i = 0; i < tailLength; i++) {
+        // Calculate position and size for each tail particle
+        const tailX = x - combinedVx * i * 0.1;
+        const tailY = y - combinedVy * i * 0.1;
+        const tailSize = initialTailSize * Math.pow(tailSizeDecrement, i);
+
+        // Determine the color of the tail particle
+        const red = 255;
+        const green = 70 + i * 3;
+        const blue = i * 2;
+        const tailColor = `rgb(${red}, ${green}, ${blue})`;
+
+        // Add tail particle to the particles array
         particles.push({
-            x: x - combinedVx * i * 0.1, // Position the tail particles along the trajectory
-            y: y - combinedVy * i * 0.1,
+            x: tailX,
+            y: tailY,
             vx: combinedVx,
             vy: combinedVy,
-            size: initialTailSize * Math.pow(tailSizeDecrement, i),
-            color: `rgb(${255}, ${70 + i * 3}, ${i * 2})`, // Color transition for the tail
+            size: tailSize,
+            color: tailColor,
             type: 'meteor',
             life: tailLength - i
         });
