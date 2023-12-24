@@ -7,8 +7,10 @@ const hammer = new Hammer(canvas);
 // Get the 2D drawing context of the canvas
 const ctx = canvas.getContext('2d');
 
+/*
 // Add a listener for the 'pan' event using Hammer.js
 hammer.on('pan', handlePan);
+*/
 
 // Define variables for particles and simulation settings
 const particles = [];
