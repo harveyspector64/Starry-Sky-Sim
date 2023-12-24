@@ -27,12 +27,37 @@ const constellationStars = [
 
 
 // Start listening for user input
-canvas.addEventListener('click', function(event) {
+canvas.addEventListener('click', handleInputStart);
+canvas.addEventListener('touchstart', handleInputStart);
+canvas.addEventListener('touchend', handleInputEnd);
+canvas.addEventListener('mouseup', handleInputEnd);
+
+let startX, startY;
+
+function handleInputStart(event) {
     let rect = canvas.getBoundingClientRect();
-    let x = event.clientX - rect.left;
-    let y = event.clientY - rect.top;
-    createMeteor(x, y);
-});
+    startX = event.clientX - rect.left;
+    startY = event.clientY - rect.top;
+}
+
+function handleInputEnd(event) {
+    let rect = canvas.getBoundingClientRect();
+    let endX = event.clientX - rect.left;
+    let endY = event.clientY - rect.top;
+
+    let dx = endX - startX;
+    let dy = endY - startY;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Scale initial velocity based on distance
+    let initialVelocity = distance * 0.1; // Adjust this factor as needed
+    let angle = Math.atan2(dy, dx);
+    let vx = initialVelocity * Math.cos(angle);
+    let vy = initialVelocity * Math.sin(angle);
+
+    createMeteor(endX, endY, vx, vy);
+}
+
 
 function updateParticles() {
     particles.forEach(particle => {
@@ -131,44 +156,44 @@ function drawParticles() {
 
 
 
-function createMeteor(x, y) {
-    const meteorSpeed = 5; // Speed of the meteor
-    const tailLength = 50; // Number of particles in the tail
-    const tailSizeDecrement = 0.95; // Decrease size of tail particles
-    const initialTailSize = 2; // Initial size of tail particles
+function createMeteor(x, y, vx = 0, vy = 0) {
+    let angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x); // Calculate angle here
+  const meteorSpeed = 5; // Speed of the meteor
+  const tailLength = 50; // Number of particles in the tail
+  const tailSizeDecrement = 0.95; // Decrease size of tail particles
+  const initialTailSize = 2; // Initial size of tail particles
 
-    // Direction of the meteor
-    let angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x);
+  // Combine initial velocity with default speed
+  const combinedVx = vx + meteorSpeed * Math.cos(angle);
+  const combinedVy = vy + meteorSpeed * Math.sin(angle);
 
-    // Create the rocky head of the meteor
-    let vx = meteorSpeed * Math.cos(angle);
-    let vy = meteorSpeed * Math.sin(angle);
+  // Create the rocky head of the meteor
+  particles.push({
+    x: x,
+    y: y,
+    vx: combinedVx,
+    vy: combinedVy,
+    size: 3, // Size of the meteor head
+    color: 'grey',
+    type: 'meteor',
+    life: tailLength
+  });
 
+  // Create the fiery tail of the meteor
+  for (let i = 0; i < tailLength; i++) {
     particles.push({
-        x: x,
-        y: y,
-        vx: vx,
-        vy: vy,
-        size: 3, // Size of the meteor head
-        color: 'grey',
-        type: 'meteor',
-        life: tailLength
+      x: x - combinedVx * i * 0.1, // Position the tail particles along the trajectory
+      y: y - combinedVy * i * 0.1,
+      vx: combinedVx,
+      vy: combinedVy,
+      size: initialTailSize * Math.pow(tailSizeDecrement, i),
+      color: `rgb(${255}, ${70 + i * 3}, ${i * 2})`, // Color transition for the tail
+      type: 'meteor',
+      life: tailLength - i
     });
-
-    // Create the fiery tail of the meteor
-    for (let i = 0; i < tailLength; i++) {
-        particles.push({
-            x: x - vx * i * 0.1, // Position the tail particles along the trajectory
-            y: y - vy * i * 0.1,
-            vx: vx,
-            vy: vy,
-            size: initialTailSize * Math.pow(tailSizeDecrement, i),
-            color: `rgb(${255}, ${70 + i * 3}, ${i * 2})`, // Color transition for the tail
-            type: 'meteor',
-            life: tailLength - i
-        });
-    }
+  }
 }
+
 
 function gameLoop() {
     updateParticles();
