@@ -84,7 +84,6 @@ function handleInputEnd(event) {
     createMeteor(endX, endY, vx, vy);
 }
 
-
 function updateParticles() {
     particles.forEach(particle => {
         // Gravity effect applies only to star particles
@@ -180,30 +179,28 @@ function drawParticles() {
   ctx.fillText(constellationName, textX, textY);
 }
 
-
-
 function createMeteor(x, y, vx = 0, vy = 0) {
-    let angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x); // Calculate angle here
-  const meteorSpeed = 5; // Speed of the meteor
-  const tailLength = 50; // Number of particles in the tail
-  const tailSizeDecrement = 0.95; // Decrease size of tail particles
-  const initialTailSize = 2; // Initial size of tail particles
+    let angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x);
+    const meteorSpeed = 5;
+    const tailLength = 50;
+    const tailSizeDecrement = 0.95;
+    const initialTailSize = 2;
 
-  // Combine initial velocity with default speed
-  const combinedVx = vx + meteorSpeed * Math.cos(angle);
-  const combinedVy = vy + meteorSpeed * Math.sin(angle);
+    // Correctly calculate combined velocity
+    const combinedVx = vx + meteorSpeed * Math.cos(angle);
+    const combinedVy = vy + meteorSpeed * Math.sin(angle);
 
-  // Create the rocky head of the meteor
-  particles.push({
-    x: x,
-    y: y,
-    vx: combinedVx,
-    vy: combinedVy,
-    size: 3, // Size of the meteor head
-    color: 'grey',
-    type: 'meteor',
-    life: tailLength
-  });
+    // Create the rocky head of the meteor with immediate velocity
+    particles.push({
+        x: x,
+        y: y,
+        vx: combinedVx,
+        vy: combinedVy,
+        size: 3,
+        color: 'grey',
+        type: 'meteor',
+        life: tailLength
+    });
 
   // Create the fiery tail of the meteor
   for (let i = 0; i < tailLength; i++) {
