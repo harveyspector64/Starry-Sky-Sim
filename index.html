@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple Gravity Simulation</title>
-    <style>
-        canvas {
-            display: block;
-            margin: auto;
-            background: #000;
-        }
-    </style>
+  <title>Simple Gravity Simulation</title>
+  <style>
+    canvas {
+      display: block;
+      margin: auto;
+      background: #000;
+      touch-action: none; /* Prevent default touch behavior on canvas */
+    }
+
+    body {
+      overflow: hidden; /* Prevent page scrolling */
+    }
+  </style>
 </head>
 <body>
-    <canvas id="gravityCanvas" width="1000" height="1000" style="touch-action: none></canvas>
-    <script src="gravitysim.js"></script>
+  <canvas id="gravityCanvas" width="1000" height="1000"></canvas>
+  <script src="gravitysim.js"></script>
 </body>
 </html>
