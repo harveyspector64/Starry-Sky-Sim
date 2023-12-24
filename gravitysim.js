@@ -53,8 +53,8 @@ let startX, startY;
 
 function handlePan(event) {
     console.log('Pan event triggered', event);
-    const initialVelocityX = event.deltaX * 0.1; // Adjust this factor as needed
-    const initialVelocityY = event.deltaY * 0.1;
+    const initialVelocityX = event.deltaX * 0.05; // Adjust this factor as needed
+    const initialVelocityY = event.deltaY * 0.05;
     createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
 }
 
