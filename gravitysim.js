@@ -191,18 +191,6 @@ function createMeteor(x, y, vx = 0, vy = 0) {
     const combinedVx = vx + meteorSpeed * Math.cos(angle);
     const combinedVy = vy + meteorSpeed * Math.sin(angle);
 
-    // Create the rocky head of the meteor with immediate velocity
-    particles.push({
-        x: x,
-        y: y,
-        vx: combinedVx,
-        vy: combinedVy,
-        size: 3, // Size of the meteor head
-        color: 'grey',
-        type: 'meteor',
-        life: tailLength
-    });
-
     // Create the fiery tail of the meteor
     for (let i = 0; i < tailLength; i++) {
         particles.push({
