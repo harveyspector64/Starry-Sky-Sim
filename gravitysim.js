@@ -1,4 +1,5 @@
 const canvas = document.getElementById('gravityCanvas');
+const hammer = new Hammer(canvas);
 const ctx = canvas.getContext('2d');
 
 const particles = [];
@@ -28,8 +29,6 @@ const constellationStars = [
 
 // Start listening for user input
 canvas.addEventListener('click', handleInputStart);
-canvas.addEventListener('touchstart', handleInputStart);
-canvas.addEventListener('touchend', handleInputEnd);
 canvas.addEventListener('mouseup', handleInputEnd);
 
 let startX, startY;
