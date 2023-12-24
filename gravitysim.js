@@ -218,7 +218,6 @@ function createMeteor(x, y, vx = 0, vy = 0) {
   }
 }
 
-
 function gameLoop() {
     updateParticles();
     drawParticles();
