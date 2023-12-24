@@ -1,6 +1,5 @@
 const canvas = document.getElementById('gravityCanvas');
 const ctx = canvas.getContext('2d');
-const canvas = document.getElementById('gravityCanvas');
 const hammer = new Hammer(canvas);
 
 const particles = [];
