@@ -181,12 +181,12 @@ function drawParticles() {
 
 function createMeteor(x, y, vx = 0, vy = 0) {
     let angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x);
-    const meteorSpeed = 5;
-    const tailLength = 50;
-    const tailSizeDecrement = 0.95;
-    const initialTailSize = 2;
+    const meteorSpeed = 5; // Speed of the meteor
+    const tailLength = 50; // Number of particles in the tail
+    const tailSizeDecrement = 0.95; // Decrease size of tail particles
+    const initialTailSize = 2; // Initial size of tail particles
 
-    // Correctly calculate combined velocity
+    // Combine initial velocity with default speed
     const combinedVx = vx + meteorSpeed * Math.cos(angle);
     const combinedVy = vy + meteorSpeed * Math.sin(angle);
 
@@ -196,27 +196,26 @@ function createMeteor(x, y, vx = 0, vy = 0) {
         y: y,
         vx: combinedVx,
         vy: combinedVy,
-        size: 3,
+        size: 3, // Size of the meteor head
         color: 'grey',
         type: 'meteor',
         life: tailLength
     });
 
-  // Create the fiery tail of the meteor
-  for (let i = 0; i < tailLength; i++) {
-    particles.push({
-      x: x - combinedVx * i * 0.1, // Position the tail particles along the trajectory
-      y: y - combinedVy * i * 0.1,
-      vx: combinedVx,
-      vy: combinedVy,
-      size: initialTailSize * Math.pow(tailSizeDecrement, i),
-      color: `rgb(${255}, ${70 + i * 3}, ${i * 2})`, // Color transition for the tail
-      type: 'meteor',
-      life: tailLength - i
-    });
-  }
+    // Create the fiery tail of the meteor
+    for (let i = 0; i < tailLength; i++) {
+        particles.push({
+            x: x - combinedVx * i * 0.1, // Position the tail particles along the trajectory
+            y: y - combinedVy * i * 0.1,
+            vx: combinedVx,
+            vy: combinedVy,
+            size: initialTailSize * Math.pow(tailSizeDecrement, i),
+            color: `rgb(${255}, ${70 + i * 3}, ${i * 2})`, // Color transition for the tail
+            type: 'meteor',
+            life: tailLength - i
+        });
+    }
 }
-
 
 function gameLoop() {
     updateParticles();
