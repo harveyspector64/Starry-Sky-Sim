@@ -44,7 +44,6 @@ const constellationStars = [
  // Add more star coordinates as needed for your constellation
 ];
 
-
 // Start listening for user input
 canvas.addEventListener('click', handleInputStart);
 canvas.addEventListener('mouseup', handleInputEnd);
@@ -55,6 +54,7 @@ function handlePan(event) {
   console.log('Pan event triggered', event);
   const initialVelocityX = event.deltaX * 0.1; // Adjust this factor as needed
   const initialVelocityY = event.deltaY * 0.1;
+  createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
 }
 
 function handleInputStart(event) {
@@ -65,30 +65,22 @@ function handleInputStart(event) {
 }
 
 function handleInputEnd(event) {
- console.log('handleInputend event triggered', event);
+  console.log('handleInputend event triggered', event);
+  let rect = canvas.getBoundingClientRect();
+  let endX = event.clientX - rect.left;
+  let endY = event.clientY - rect.top;
 
- // Get accurate mouse/touch coordinates relative to the canvas
- const rect = canvas.getBoundingClientRect();
- const x = event.clientX - rect.left;
- const y = event.clientY - rect.top;
+  let dx = endX - startX;
+  let dy = endY - startY;
+  let distance = Math.sqrt(dx * dx + dy * dy);
 
- // Create the meteor with initial velocity based on distance from canvas center
- createMeteor(x, y, calculateInitialVelocity(x, y));
-}
+  // Scale initial velocity based on distance
+  let initialVelocity = distance * 0.1; // Adjust this factor as needed
+  let angle = Math.atan2(dy, dx);
+  let vx = initialVelocity * Math.cos(angle);
+  let vy = initialVelocity * Math.sin(angle);
 
-// Helper function to calculate initial velocity based on distance
-function calculateInitialVelocity(x, y) {
- const centerX = canvas.width / 2;
- const centerY = canvas.height / 2;
- const dx = centerX - x;
- const dy = centerY - y;
- const distance = Math.sqrt(dx * dx + dy * dy);
- const initialVelocity = distance * 0.1; // Adjust this factor as needed
- const angle = Math.atan2(dy, dx);
- return {
-  vx: initialVelocity * Math.cos(angle),
-  vy: initialVelocity * Math.sin(angle)
- };
+  createMeteor(endX, endY, vx, vy);
 }
 
 function updateParticles() {
@@ -186,8 +178,6 @@ function drawParticles() {
  ctx.fillText(constellationName, textX, textY);
 }
 
-
-
 function createMeteor(x, y, vx = 0, vy = 0) {
   let angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x); // Calculate angle here
  const meteorSpeed = 5; // Speed of the meteor
@@ -225,7 +215,6 @@ function createMeteor(x, y, vx = 0, vy = 0) {
   });
  }
 }
-
 
 function gameLoop() {
   updateParticles();
