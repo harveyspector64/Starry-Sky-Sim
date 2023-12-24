@@ -10,6 +10,12 @@ const ctx = canvas.getContext('2d');
 // Add a listener for the 'pan' event using Hammer.js
 hammer.on('pan', handlePan);
 
+//Event listener added to canvas for touchmove events preventing scrolling on ios
+canvas.addEventListener('touchmove', function(event) {
+    event.preventDefault(); // Prevent scrolling on touch
+}, { passive: false });
+
+
 // Define variables for particles and simulation settings
 const particles = [];
 const numParticles = 5000;
