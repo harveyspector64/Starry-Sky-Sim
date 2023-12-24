@@ -103,10 +103,11 @@ function updateParticles() {
             }
         }
 
+        // Update position of all particles (stars and meteors)
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        // Update life and remove dead particles
+        // Update life and remove dead particles for meteors
         if (particle.type === 'meteor') {
             particle.life--;
             if (particle.life <= 0) {
