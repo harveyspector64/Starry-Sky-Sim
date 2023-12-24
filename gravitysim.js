@@ -43,18 +43,21 @@ canvas.addEventListener('mouseup', handleInputEnd);
 let startX, startY;
 
 function handlePan(event) {
+    console.log('Pan event triggered', event);
     const initialVelocityX = event.deltaX * 0.1; // Adjust this factor as needed
     const initialVelocityY = event.deltaY * 0.1;
     createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
 }
 
 function handleInputStart(event) {
+    console.log('handleInputstart event triggered', event);
     let rect = canvas.getBoundingClientRect();
     startX = event.clientX - rect.left;
     startY = event.clientY - rect.top;
 }
 
 function handleInputEnd(event) {
+    console.log('handleInputend event triggered', event);
     let rect = canvas.getBoundingClientRect();
     let endX = event.clientX - rect.left;
     let endY = event.clientY - rect.top;
