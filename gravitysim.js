@@ -53,8 +53,8 @@ let startX, startY;
 
 function handlePan(event) {
     console.log('Pan event triggered', event);
-    const initialVelocityX = event.deltaX * 0.05; // Adjust this factor as needed
-    const initialVelocityY = event.deltaY * 0.05;
+    const initialVelocityX = event.deltaX * 0.1; // Adjust this factor as needed
+    const initialVelocityY = event.deltaY * 0.1;
     createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
 }
 
@@ -84,6 +84,7 @@ function handleInputEnd(event) {
     createMeteor(endX, endY, vx, vy);
 }
 
+
 function updateParticles() {
     particles.forEach(particle => {
         // Gravity effect applies only to star particles
@@ -103,11 +104,10 @@ function updateParticles() {
             }
         }
 
-        // Update position of all particles (stars and meteors)
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        // Update life and remove dead particles for meteors
+        // Update life and remove dead particles
         if (particle.type === 'meteor') {
             particle.life--;
             if (particle.life <= 0) {
@@ -180,6 +180,8 @@ function drawParticles() {
   ctx.fillText(constellationName, textX, textY);
 }
 
+
+
 function createMeteor(x, y, vx = 0, vy = 0) {
     let angle = Math.atan2(canvas.height / 2 - y, canvas.width / 2 - x); // Calculate angle here
   const meteorSpeed = 5; // Speed of the meteor
@@ -217,6 +219,7 @@ function createMeteor(x, y, vx = 0, vy = 0) {
     });
   }
 }
+
 
 function gameLoop() {
     updateParticles();
