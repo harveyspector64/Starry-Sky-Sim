@@ -1,8 +1,16 @@
+// Retrieve the canvas element
 const canvas = document.getElementById('gravityCanvas');
+
+// Initialize Hammer.js for touch interactions
 const hammer = new Hammer(canvas);
+
+// Get the 2D drawing context of the canvas
 const ctx = canvas.getContext('2d');
+
+// Add a listener for the 'pan' event using Hammer.js
 hammer.on('pan', handlePan);
 
+// Define variables for particles and simulation settings
 const particles = [];
 const numParticles = 5000;
 const gravitationalConstant = 0.0001;
