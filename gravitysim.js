@@ -71,24 +71,24 @@ function handleInputStart(event) {
 }
 
 function handleInputEnd(event) {
-    console.log('handleInputend event triggered', event);
-    let rect = canvas.getBoundingClientRect();
-    let endX = event.clientX - rect.left;
-    let endY = event.clientY - rect.top;
+  let rect = canvas.getBoundingClientRect();
+  let endX = event.clientX - rect.left;
+  let endY = event.clientY - rect.top;
 
-    let dx = endX - startX;
-    let dy = endY - startY;
-    let distance = Math.sqrt(dx * dx + dy * dy);
+  let dx = endX - startX;
+  let dy = endY - startY;
+  let distance = Math.sqrt(dx * dx + dy * dy);
+  let initialVelocity = distance * 0.1;
+  let angle = Math.atan2(dy, dx);
+  let vx = initialVelocity * Math.cos(angle);
+  let vy = initialVelocity * Math.sin(angle);
 
-    // Scale initial velocity based on distance
-    let initialVelocity = distance * 0.1; // Adjust this factor as needed
-    let angle = Math.atan2(dy, dx);
-    let vx = initialVelocity * Math.cos(angle);
-    let vy = initialVelocity * Math.sin(angle);
-
+  if (currentObjectType === 'meteor') {
     createMeteor(endX, endY, vx, vy);
+  } else if (currentObjectType === 'airplane') {
+    createAirplane(endX, endY);
+  }
 }
-
 
 function updateParticles() {
     particles.forEach(particle => {
@@ -133,56 +133,61 @@ function updateParticles() {
 }
 
 function drawParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  particles.forEach(particle => {
-    if (particle.type === 'star') {
-      // Twinkling effect for stars
-      if (!particle.hasOwnProperty('brightness')) {
-        particle.brightness = Math.random() * 0.5 + 0.5; // Initial brightness
-      }
-      particle.brightness += (Math.random() - 0.5) * 0.2; // Adjust brightness
-      particle.brightness = Math.max(0.2, Math.min(particle.brightness, 1)); // Keep within range
+    particles.forEach(particle => {
+        if (particle.type === 'star') {
+            // Twinkling effect for stars
+            if (!particle.hasOwnProperty('brightness')) {
+                particle.brightness = Math.random() * 0.5 + 0.5; // Initial brightness
+            }
+            particle.brightness += (Math.random() - 0.5) * 0.2; // Adjust brightness
+            particle.brightness = Math.max(0.2, Math.min(particle.brightness, 1)); // Keep within range
 
-      let brightness = particle.brightness * 255;
-      let colorVariation = 20; // Adjust this value for more or less color variation
-      let red = Math.min(Math.max(brightness + (Math.random() - 0.5) * colorVariation, 0), 255);
-      let green = Math.min(Math.max(brightness + (Math.random() - 0.5) * colorVariation, 0), 255);
-      let blue = Math.min(Math.max(brightness + (Math.random() - 0.5) * colorVariation, 0), 255);
+            let brightness = particle.brightness * 255;
+            let colorVariation = 20; // Adjust this value for more or less color variation
+            let red = Math.min(Math.max(brightness + (Math.random() - 0.5) * colorVariation, 0), 255);
+            let green = Math.min(Math.max(brightness + (Math.random() - 0.5) * colorVariation, 0), 255);
+            let blue = Math.min(Math.max(brightness + (Math.random() - 0.5) * colorVariation, 0), 255);
 
-      ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
-      ctx.beginPath();
-      ctx.arc(particle.x, particle.y, 1, 0, Math.PI * 2);
-      ctx.fill();
-    } else if (particle.type === 'meteor') {
-      ctx.fillStyle = particle.color;
-      ctx.beginPath();
-      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-      ctx.fill();
+            ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, 1, 0, Math.PI * 2);
+            ctx.fill();
+        } else if (particle.type === 'meteor') {
+            ctx.fillStyle = particle.color;
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+            ctx.fill();
+        } else if (particle.type === 'airplane') {
+            let airplaneScale = 0.05; // Scale factor for the airplane
+            let airplaneWidth = airplaneImage.width * airplaneScale;
+            let airplaneHeight = airplaneImage.height * airplaneScale;
+            ctx.drawImage(airplaneImage, particle.x, particle.y, airplaneWidth, airplaneHeight);
+        }
+    });
+
+    // Draw constellation lines
+    ctx.lineWidth = .75; // Adjust line thickness as desired
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; // Adjust opacity as desired
+
+    for (let i = 0; i < constellationStars.length - 1; i++) {
+        ctx.beginPath();
+        ctx.moveTo(constellationStars[i].x, constellationStars[i].y);
+        ctx.lineTo(constellationStars[i + 1].x, constellationStars[i + 1].y);
+        ctx.stroke();
     }
-  });
 
-  // Draw constellation lines
-  ctx.lineWidth = .75; // Adjust line thickness as desired
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; // Adjust opacity as desired
+    // Draw constellation label
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; // Adjust opacity as desired
+    ctx.font = '12px Arial'; // Adjust font size and style as desired
+    const constellationName = 'Ursa Major'; // Replace with your desired constellation name
 
-  for (let i = 0; i < constellationStars.length - 1; i++) {
-    ctx.beginPath();
-    ctx.moveTo(constellationStars[i].x, constellationStars[i].y);
-    ctx.lineTo(constellationStars[i + 1].x, constellationStars[i + 1].y);
-    ctx.stroke();
-  }
+    const textWidth = ctx.measureText(constellationName).width;
+    const textX = (constellationStars[0].x + constellationStars[2].x) / 2 - textWidth / 2;
+    const textY = constellationStars[0].y - 15; // Adjust vertical position as needed
 
-  // (Optional) Draw constellation label
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; // Adjust opacity as desired
-  ctx.font = '12px Arial'; // Adjust font size and style as desired
-  const constellationName = 'Ursa Major'; // Replace with your desired constellation name
-
-  const textWidth = ctx.measureText(constellationName).width;
-  const textX = (constellationStars[0].x + constellationStars[2].x) / 2 - textWidth / 2;
-  const textY = constellationStars[0].y - 15; // Adjust vertical position as needed
-
-  ctx.fillText(constellationName, textX, textY);
+    ctx.fillText(constellationName, textX, textY);
 }
 
 function createMeteor(x, y, vx = 0, vy = 0) {
