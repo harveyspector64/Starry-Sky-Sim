@@ -194,34 +194,21 @@ function createMeteor(x, y, vx = 0, vy = 0) {
   const combinedVx = vx + meteorSpeed * Math.cos(angle);
   const combinedVy = vy + meteorSpeed * Math.sin(angle);
 
-  // Create the head of the meteor with initial velocity
-  // This ensures it moves immediately, not staying behind as before.
-  particles.push({
-    x: x,
-    y: y,
-    vx: combinedVx,
-    vy: combinedVy,
-    size: initialTailSize,
-    color: 'rgb(255, 165, 0)', // Orange color for the meteor head
-    type: 'meteor',
-    life: tailLength
-  });
-
-  // Create the fiery tail of the meteor
-  for (let i = 1; i < tailLength; i++) {
+  // Create the fiery tail of the meteor and head
+  for (let i = 0; i < tailLength; i++) {
     // Calculate position and size for each tail particle
     const tailX = x - combinedVx * i * 0.1;
     const tailY = y - combinedVy * i * 0.1;
-    const tailSize = initialTailSize * Math.pow(tailSizeDecrement, i);
+    const tailSize = i === 0 ? initialTailSize : initialTailSize * Math.pow(tailSizeDecrement, i);
 
     // Determine the color of the tail particle
-    const red = 255;
-    const green = 70 + i * 3;
-    const blue = i * 2;
+    // The head (i == 0) will be brighter
+    const red = i === 0 ? 255 : 255;
+    const green = i === 0 ? 165 : 70 + i * 3;
+    const blue = i === 0 ? 0 : i * 2;
     const tailColor = `rgb(${red}, ${green}, ${blue})`;
 
-    // Add tail particle to the particles array at the beginning (unshift)
-    // This way tail particles are drawn first, and the head will be on top
+    // Add tail particle to the particles array
     particles.unshift({
       x: tailX,
       y: tailY,
