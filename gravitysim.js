@@ -246,7 +246,10 @@ function createMeteor(x, y, vx = 0, vy = 0) {
 
 // Ensure DOM is fully loaded
 window.onload = function() {
-  // Set up event listeners for buttons
+  let airplaneImage = new Image();
+  airplaneImage.src = 'https://github.com/harveyspector64/Starry-Sky-Sim/blob/33a9f3026f150ac1157e6a81b61293fa6b19bf25/airplane747transparent.png?raw=true'; // Your airplane image URL
+
+  // Button event listeners
   document.getElementById('addMeteor').addEventListener('click', function() {
     currentObjectType = 'meteor';
     updateButtonStyles(this.id);
@@ -271,6 +274,15 @@ window.onload = function() {
 
   // Start the game loop
   requestAnimationFrame(gameLoop);
+
+  // Canvas setup
+  const canvas = document.getElementById('gravityCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Hammer.js initialization
+  const hammer = new Hammer(canvas);
+
+  // ... other code within window.onload
 };
 
 function drawAirplane(x, y) {
