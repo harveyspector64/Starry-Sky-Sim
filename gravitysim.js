@@ -83,6 +83,8 @@ function handleInputEnd(event) {
     let vx = initialVelocity * Math.cos(angle);
     let vy = initialVelocity * Math.sin(angle);
 
+    console.log('handleInputEnd called with currentObjectType:', currentObjectType);
+
     if (currentObjectType === 'meteor') {
         createMeteor(endX, endY, vx, vy);
     } else if (currentObjectType === 'airplane') {
