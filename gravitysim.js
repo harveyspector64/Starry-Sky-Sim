@@ -55,30 +55,6 @@ let startX, startY;
 
 let currentObjectType = 'meteor'; // Default to 'meteor'
 
-// Ensure DOM is fully loaded
-window.onload = function() {
-  // Set up event listeners for buttons
-  document.getElementById('addMeteor').addEventListener('click', function() {
-    currentObjectType = 'meteor';
-    updateButtonStyles(this.id);
-  });
-  document.getElementById('addAirplane').addEventListener('click', function() {
-    currentObjectType = 'airplane';
-    updateButtonStyles(this.id);
-  });
-
-  // Function to update button styles
-  function updateButtonStyles(activeButtonId) {
-    document.querySelectorAll('#controls button').forEach(button => {
-      if (button.id === activeButtonId) {
-        button.style.backgroundColor = 'lightblue'; // Active button style
-      } else {
-        button.style.backgroundColor = ''; // Reset style for inactive buttons
-      }
-    });
-  }
-};
-
 function handlePan(event) {
     console.log('Pan event triggered', event);
     const initialVelocityX = event.deltaX * 0.1; // Adjust this factor as needed
@@ -94,23 +70,24 @@ function handleInputStart(event) {
 }
 
 function handleInputEnd(event) {
-  let rect = canvas.getBoundingClientRect();
-  let endX = event.clientX - rect.left;
-  let endY = event.clientY - rect.top;
+    let rect = canvas.getBoundingClientRect();
+    let endX = event.clientX - rect.left;
+    let endY = event.clientY - rect.top;
 
-  let dx = endX - startX;
-  let dy = endY - startY;
-  let distance = Math.sqrt(dx * dx + dy * dy);
-  let initialVelocity = distance * 0.1;
-  let angle = Math.atan2(dy, dx);
-  let vx = initialVelocity * Math.cos(angle);
-  let vy = initialVelocity * Math.sin(angle);
+    // Assuming dx, dy calculation as before
+    let dx = endX - startX;
+    let dy = endY - startY;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+    let initialVelocity = distance * 0.1;
+    let angle = Math.atan2(dy, dx);
+    let vx = initialVelocity * Math.cos(angle);
+    let vy = initialVelocity * Math.sin(angle);
 
-  if (currentObjectType === 'meteor') {
-    createMeteor(endX, endY, vx, vy);
-  } else if (currentObjectType === 'airplane') {
-    createAirplane(endX, endY);
-  }
+    if (currentObjectType === 'meteor') {
+        createMeteor(endX, endY, vx, vy);
+    } else if (currentObjectType === 'airplane') {
+        createAirplane(endX, endY);
+    }
 }
 
 function updateParticles() {
@@ -253,20 +230,48 @@ function createMeteor(x, y, vx = 0, vy = 0) {
   }
 }
 
+// Ensure DOM is fully loaded
+window.onload = function() {
+  // Set up event listeners for buttons
+  document.getElementById('addMeteor').addEventListener('click', function() {
+    currentObjectType = 'meteor';
+    updateButtonStyles(this.id);
+    console.log('Meteor button clicked, currentObjectType:', currentObjectType);
+  });
+  document.getElementById('addAirplane').addEventListener('click', function() {
+    currentObjectType = 'airplane';
+    updateButtonStyles(this.id);
+    console.log('Airplane button clicked, currentObjectType:', currentObjectType);
+  });
+
+  // Function to update button styles
+  function updateButtonStyles(activeButtonId) {
+    document.querySelectorAll('#controls button').forEach(button => {
+      if (button.id === activeButtonId) {
+        button.style.backgroundColor = 'lightblue'; // Active button style
+      } else {
+        button.style.backgroundColor = ''; // Reset style for inactive buttons
+      }
+    });
+  }
+
+  // Start the game loop
+  requestAnimationFrame(gameLoop);
+};
+
 function drawAirplane(x, y) {
   ctx.drawImage(airplaneImage, x, y);
 }
 
 function createAirplane(x, y) {
-  particles.push({
-    x: x,
-    y: y,
-    vx: 2, // Horizontal speed
-    vy: 0, // Vertical speed
-    type: 'airplane'
-  });
+    particles.push({
+        x: x,
+        y: y,
+        vx: 2, // Adjust as needed
+        vy: 0,
+        type: 'airplane'
+    });
 }
-
 
 function gameLoop() {
     updateParticles();
