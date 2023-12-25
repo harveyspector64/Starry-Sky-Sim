@@ -287,6 +287,10 @@ function createAirplane(x, y) {
     });
 }
 
+airplaneImage.onerror = function() {
+  console.error("Error loading the airplane image.");
+};
+
 function gameLoop() {
     updateParticles();
     drawParticles();
