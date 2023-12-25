@@ -185,8 +185,6 @@ function drawParticles() {
   ctx.fillText(constellationName, textX, textY);
 }
 
-
-
 function createMeteor(x, y, vx = 0, vy = 0) {
   // Define characteristics of the meteor
   const meteorSpeed = 5; // Base speed of the meteor
@@ -226,6 +224,21 @@ function createMeteor(x, y, vx = 0, vy = 0) {
     });
   }
 }
+
+function drawAirplane(x, y) {
+  ctx.drawImage(airplaneImage, x, y);
+}
+
+function createAirplane(x, y) {
+  particles.push({
+    x: x,
+    y: y,
+    vx: 2, // Horizontal speed
+    vy: 0, // Vertical speed
+    type: 'airplane'
+  });
+}
+
 
 function gameLoop() {
     updateParticles();
