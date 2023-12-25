@@ -25,6 +25,9 @@ const numParticles = 5000;
 const gravitationalConstant = 0.0001;
 const maxDistance = 100; // Limit calculation for performance
 
+let airplaneImage = new Image();
+airplaneImage.src = 'https://github.com/harveyspector64/Starry-Sky-Sim/blob/33a9f3026f150ac1157e6a81b61293fa6b19bf25/airplane747transparent.png'; // Your airplane image URL
+
 // Create particles with random positions and zero initial velocity
 for (let i = 0; i < numParticles; i++) {
     particles.push({
