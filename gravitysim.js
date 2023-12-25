@@ -51,6 +51,8 @@ canvas.addEventListener('mouseup', handleInputEnd);
 
 let startX, startY;
 
+let currentObjectType = 'meteor'; // Default to 'meteor'
+
 function handlePan(event) {
     console.log('Pan event triggered', event);
     const initialVelocityX = event.deltaX * 0.1; // Adjust this factor as needed
