@@ -94,6 +94,12 @@ function handleInputEnd(event) {
 
 function updateParticles() {
     particles.forEach(particle => {
+        // Add logic here for updating airplane particles, if needed
+        // For example, updating position based on velocity
+        if (particle.type === 'airplane') {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+        }
         // Gravity effect applies only to star particles
         if (particle.type === 'star') {
             for (let otherParticle of particles) {
@@ -138,6 +144,12 @@ function drawParticles() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     particles.forEach(particle => {
+        if (particle.type === 'airplane') {
+            let airplaneScale = 0.05; // Adjust scale as needed
+            let airplaneWidth = airplaneImage.width * airplaneScale;
+            let airplaneHeight = airplaneImage.height * airplaneScale;
+            ctx.drawImage(airplaneImage, particle.x, particle.y, airplaneWidth, airplaneHeight);
+        }        
         if (particle.type === 'star') {
             // Twinkling effect for stars
             if (!particle.hasOwnProperty('brightness')) {
@@ -269,7 +281,7 @@ function createAirplane(x, y) {
     particles.push({
         x: x,
         y: y,
-        vx: 2, // Adjust as needed
+        vx: 2, // Adjust speed as necessary
         vy: 0,
         type: 'airplane'
     });
