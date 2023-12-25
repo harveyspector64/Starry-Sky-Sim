@@ -47,7 +47,6 @@ const constellationStars = [
   // Add more star coordinates as needed for your constellation
 ];
 
-
 // Start listening for user input
 canvas.addEventListener('click', handleInputStart);
 canvas.addEventListener('mouseup', handleInputEnd);
@@ -55,6 +54,30 @@ canvas.addEventListener('mouseup', handleInputEnd);
 let startX, startY;
 
 let currentObjectType = 'meteor'; // Default to 'meteor'
+
+// Ensure DOM is fully loaded
+window.onload = function() {
+  // Set up event listeners for buttons
+  document.getElementById('addMeteor').addEventListener('click', function() {
+    currentObjectType = 'meteor';
+    updateButtonStyles(this.id);
+  });
+  document.getElementById('addAirplane').addEventListener('click', function() {
+    currentObjectType = 'airplane';
+    updateButtonStyles(this.id);
+  });
+
+  // Function to update button styles
+  function updateButtonStyles(activeButtonId) {
+    document.querySelectorAll('#controls button').forEach(button => {
+      if (button.id === activeButtonId) {
+        button.style.backgroundColor = 'lightblue'; // Active button style
+      } else {
+        button.style.backgroundColor = ''; // Reset style for inactive buttons
+      }
+    });
+  }
+};
 
 function handlePan(event) {
     console.log('Pan event triggered', event);
