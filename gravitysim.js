@@ -195,7 +195,7 @@ function createMeteor(x, y, vx = 0, vy = 0) {
   const combinedVy = vy + meteorSpeed * Math.sin(angle);
 
   // Create the fiery tail of the meteor (excluding the first particle)
-  for (let i = 1; i < tailLength; i++) { // Start the loop from 1 instead of 0
+  for (let i = 0; i < tailLength; i++) { // Start the loop from 1 instead of 0
     // Calculate position and size for each tail particle
     const tailX = x - combinedVx * i * 0.1;
     const tailY = y - combinedVy * i * 0.1;
