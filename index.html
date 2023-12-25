@@ -7,13 +7,21 @@
       display: block;
       margin: auto;
       background: #000;
-      touch-action: none; /* Prevent default touch behavior on canvas */
+      touch-action: none;
+    }
+    #controls {
+      text-align: center;
+      margin-top: 20px;
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
 </head>
 <body>
   <canvas id="gravityCanvas" width="1000" height="1000"></canvas>
+  <div id="controls">
+    <button id="addMeteor">Meteor</button>
+    <button id="addAirplane">Airplane</button>
+  </div>
   <script src="gravitysim.js"></script>
 </body>
 </html>
