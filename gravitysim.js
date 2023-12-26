@@ -327,6 +327,12 @@ window.onload = function() {
     updateButtonStyles(this.id);
     console.log('Airplane button clicked, currentObjectType:', currentObjectType);
   });
+ document.getElementById('addUFO').addEventListener('click', function() {
+    currentObjectType = 'ufo';
+    updateButtonStyles(this.id);
+    console.log('UFO button clicked, currentObjectType:', currentObjectType);
+});
+
 // New touchend event listeners
 document.getElementById('addMeteor').addEventListener('touchend', function(event) {
     event.preventDefault(); // Prevents additional mouse click events
@@ -336,6 +342,11 @@ document.getElementById('addMeteor').addEventListener('touchend', function(event
 document.getElementById('addAirplane').addEventListener('touchend', function(event) {
     event.preventDefault(); // Prevents additional mouse click events
     currentObjectType = 'airplane';
+    updateButtonStyles(this.id);
+});
+document.getElementById('addUFO').addEventListener('touchend', function(event) {
+    event.preventDefault(); // Prevents additional mouse click events
+    currentObjectType = 'ufo';
     updateButtonStyles(this.id);
 });
 
