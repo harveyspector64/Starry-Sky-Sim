@@ -202,7 +202,7 @@ function drawParticles() {
         }
 
         // Draw haze
-        const hazeOpacity = 0.1; // Adjust for desired transparency
+        const hazeOpacity = 0.05; // Adjust for desired transparency
         const hazeColor = 'rgba(255, 255, 255,' + hazeOpacity + ')'; // Light white for haze
         ctx.fillStyle = hazeColor;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
