@@ -83,6 +83,9 @@ function handleTap(event) {
     } else if (currentObjectType === 'airplane') {
         createAirplane(event.center.x, event.center.y);
     }
+    } else if (currentObjectType === 'ufo') {
+        createUFO(event.center.x, event.center.y);
+    }
 }
 
 hammer.on('tap', handleTap);
