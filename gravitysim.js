@@ -28,6 +28,9 @@ const maxDistance = 100; // Limit calculation for performance
 let airplaneImage = new Image();
 airplaneImage.src = 'https://github.com/harveyspector64/Starry-Sky-Sim/blob/33a9f3026f150ac1157e6a81b61293fa6b19bf25/airplane747transparent.png?raw=true'; // Your airplane image URL
 
+let ufoImage = new Image();
+ufoImage.src = 'https://github.com/harveyspector64/Starry-Sky-Sim/blob/a7773cc4bf3463e5a93d2709144d9f781f4f8115/harveyspector_pixel_art_classic_UFO_side_view_transparent_backg_23989567-06df-47bb-a647-77138dd5bede.png'; // Your UFO image URL
+
 // Create particles with random positions and zero initial velocity
 for (let i = 0; i < numParticles; i++) {
     particles.push({
@@ -151,6 +154,34 @@ function updateParticles() {
             particle.brightness += (Math.random() - 0.5) * 0.2; // Adjust brightness
             particle.brightness = Math.max(0.2, Math.min(particle.brightness, 1)); // Keep within range
         }
+        if (particle.type === 'ufo') {
+            if (particle.state === 'moving') {
+                switch (particle.direction) {
+                    case 'up':
+                        particle.y -= 2; // Speed of movement, adjust as needed
+                        break;
+                    case 'right':
+                        particle.x += 2;
+                        break;
+                    case 'left':
+                        particle.x -= 2;
+                        break;
+                }
+                particle.moveCounter++;
+                if (particle.moveCounter > 50) { // Duration of movement, adjust as needed
+                    particle.moveCounter = 0;
+                    particle.state = 'pausing';
+                }
+            } else if (particle.state === 'pausing') {
+                particle.pauseCounter++;
+                if (particle.pauseCounter > 30) { // Duration of pause, adjust as needed
+                    particle.pauseCounter = 0;
+                    particle.state = 'moving';
+                    // Change direction randomly
+                    particle.direction = ['up', 'right', 'left'][Math.floor(Math.random() * 3)];
+                }
+            }
+        }
     });
 }
 
@@ -175,6 +206,15 @@ function drawParticles() {
                 particle.light.blinkCounter++;
             }
         }
+
+        particles.forEach(particle => {
+        if (particle.type === 'ufo') {
+            let ufoScale = 0.05; // Adjust scale as needed
+            let ufoWidth = ufoImage.width * ufoScale; // Assuming ufoImage is loaded
+            let ufoHeight = ufoImage.height * ufoScale;
+            ctx.drawImage(ufoImage, particle.x, particle.y, ufoWidth, ufoHeight);
+        }
+    });
         
         if (particle.type === 'star') {
             // Twinkling effect for stars
@@ -340,6 +380,19 @@ function createAirplane(x, y) {
 airplaneImage.onerror = function() {
   console.error("Error loading the airplane image.");
 };
+
+function createUFO(x, y) {
+    const ufo = {
+        x: x,
+        y: y,
+        type: 'ufo',
+        state: 'moving', // can be 'moving', 'pausing', etc.
+        direction: 'up', // initial direction, can be 'up', 'right', 'left'
+        moveCounter: 0, // to control movement duration
+        pauseCounter: 0, // to control pause duration
+    };
+    particles.push(ufo);
+}
 
 function gameLoop() {
     updateParticles();
