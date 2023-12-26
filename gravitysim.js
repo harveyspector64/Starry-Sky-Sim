@@ -66,6 +66,8 @@ function handlePan(event) {
         createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
     } else if (currentObjectType === 'airplane') {
         createAirplane(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
+    } else if (currentObjectType === 'ufo') {
+        createUFO(event.center.x, event.center.y);
     }
 }
 
@@ -106,6 +108,13 @@ function handleInputEnd(event) {
         createMeteor(endX, endY, vx, vy);
     } else if (currentObjectType === 'airplane') {
         createAirplane(endX, endY);
+    }
+    if (currentObjectType === 'meteor') {
+        createMeteor(endX, endY, vx, vy);
+    } else if (currentObjectType === 'airplane') {
+        createAirplane(endX, endY);
+    } else if (currentObjectType === 'ufo') {
+        createUFO(endX, endY);
     }
 }
 
