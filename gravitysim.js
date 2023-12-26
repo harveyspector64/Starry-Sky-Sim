@@ -59,22 +59,26 @@ let startX, startY;
 let currentObjectType = 'meteor'; // Default to 'meteor'
 
 function handlePan(event) {
-    const initialVelocityX = event.deltaX * 0.1;
-    const initialVelocityY = event.deltaY * 0.1;
+  const initialVelocityX = event.deltaX * 0.1;
+  const initialVelocityY = event.deltaY * 0.1;
 
-    if (currentObjectType === 'meteor') {
-        createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
-    } else if (currentObjectType === 'airplane') {
-        createAirplane(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
-    }
+  if (currentObjectType === 'meteor') {
+    createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
+  } else if (currentObjectType === 'airplane') {
+    createAirplane(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
+  } else if (currentObjectType === 'ufo') {
+    createUFO(event.center.x, event.center.y);
+  }
 }
 
 function handleTap(event) {
-    if (currentObjectType === 'meteor') {
-        createMeteor(event.center.x, event.center.y);
-    } else if (currentObjectType === 'airplane') {
-        createAirplane(event.center.x, event.center.y);
-    }
+  if (currentObjectType === 'meteor') {
+    createMeteor(event.center.x, event.center.y);
+  } else if (currentObjectType === 'airplane') {
+    createAirplane(event.center.x, event.center.y);
+  } else if (currentObjectType === 'ufo') {
+    createUFO(event.center.x, event.center.y);
+  }
 }
 
 hammer.on('tap', handleTap);
@@ -87,26 +91,28 @@ function handleInputStart(event) {
 }
 
 function handleInputEnd(event) {
-    let rect = canvas.getBoundingClientRect();
-    let endX = event.clientX - rect.left;
-    let endY = event.clientY - rect.top;
+  let rect = canvas.getBoundingClientRect();
+  let endX = event.clientX - rect.left;
+  let endY = event.clientY - rect.top;
 
-    // Assuming dx, dy calculation as before
-    let dx = endX - startX;
-    let dy = endY - startY;
-    let distance = Math.sqrt(dx * dx + dy * dy);
-    let initialVelocity = distance * 0.1;
-    let angle = Math.atan2(dy, dx);
-    let vx = initialVelocity * Math.cos(angle);
-    let vy = initialVelocity * Math.sin(angle);
+  // Assuming dx, dy calculation as before
+  let dx = endX - startX;
+  let dy = endY - startY;
+  let distance = Math.sqrt(dx * dx + dy * dy);
+  let initialVelocity = distance * 0.1;
+  let angle = Math.atan2(dy, dx);
+  let vx = initialVelocity * Math.cos(angle);
+  let vy = initialVelocity * Math.sin(angle);
 
-    console.log('handleInputEnd called with currentObjectType:', currentObjectType);
+  console.log('handleInputEnd called with currentObjectType:', currentObjectType);
 
-    if (currentObjectType === 'meteor') {
-        createMeteor(endX, endY, vx, vy);
-    } else if (currentObjectType === 'airplane') {
-        createAirplane(endX, endY);
-    }
+  if (currentObjectType === 'meteor') {
+    createMeteor(endX, endY, vx, vy);
+  } else if (currentObjectType === 'airplane') {
+    createAirplane(endX, endY);
+  } else if (currentObjectType === 'ufo') {
+    createUFO(endX, endY); // Added line for UFO creation
+  }
 }
 
 function updateParticles() {
