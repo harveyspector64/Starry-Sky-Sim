@@ -260,6 +260,17 @@ window.onload = function() {
     updateButtonStyles(this.id);
     console.log('Airplane button clicked, currentObjectType:', currentObjectType);
   });
+// New touchend event listeners
+document.getElementById('addMeteor').addEventListener('touchend', function(event) {
+    event.preventDefault(); // Prevents additional mouse click events
+    currentObjectType = 'meteor';
+    updateButtonStyles(this.id);
+});
+document.getElementById('addAirplane').addEventListener('touchend', function(event) {
+    event.preventDefault(); // Prevents additional mouse click events
+    currentObjectType = 'airplane';
+    updateButtonStyles(this.id);
+});
 
   // Function to update button styles
   function updateButtonStyles(activeButtonId) {
