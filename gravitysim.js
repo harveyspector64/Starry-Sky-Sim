@@ -163,7 +163,19 @@ function drawParticles() {
             let airplaneWidth = airplaneImage.width * airplaneScale;
             let airplaneHeight = airplaneImage.height * airplaneScale;
             ctx.drawImage(airplaneImage, particle.x, particle.y, airplaneWidth, airplaneHeight);
-        }        
+
+            // Drawing blinking light for the airplane
+            if (particle.light && particle.light.blinking) {
+                if (particle.light.blinkCounter % particle.light.blinkRate === 0) {
+                    ctx.fillStyle = 'red';
+                    ctx.beginPath();
+                    ctx.arc(particle.x + 10, particle.y + 10, 3, 0, Math.PI * 2); // Adjust position as needed
+                    ctx.fill();
+                }
+                particle.light.blinkCounter++;
+            }
+        }
+        
         if (particle.type === 'star') {
             // Twinkling effect for stars
             if (!particle.hasOwnProperty('brightness')) {
@@ -187,35 +199,30 @@ function drawParticles() {
             ctx.beginPath();
             ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
             ctx.fill();
-        } else if (particle.type === 'airplane') {
-            let airplaneScale = 0.05; // Scale factor for the airplane
-            let airplaneWidth = airplaneImage.width * airplaneScale;
-            let airplaneHeight = airplaneImage.height * airplaneScale;
-            ctx.drawImage(airplaneImage, particle.x, particle.y, airplaneWidth, airplaneHeight);
         }
+
+        // Draw constellation lines
+        ctx.lineWidth = .75; // Adjust line thickness as desired
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; // Adjust opacity as desired
+
+        for (let i = 0; i < constellationStars.length - 1; i++) {
+            ctx.beginPath();
+            ctx.moveTo(constellationStars[i].x, constellationStars[i].y);
+            ctx.lineTo(constellationStars[i + 1].x, constellationStars[i + 1].y);
+            ctx.stroke();
+        }
+
+        // Draw constellation label
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; // Adjust opacity as desired
+        ctx.font = '12px Arial'; // Adjust font size and style as desired
+        const constellationName = 'Ursa Major'; // Replace with your desired constellation name
+
+        const textWidth = ctx.measureText(constellationName).width;
+        const textX = (constellationStars[0].x + constellationStars[2].x) / 2 - textWidth / 2;
+        const textY = constellationStars[0].y - 15; // Adjust vertical position as needed
+
+        ctx.fillText(constellationName, textX, textY);
     });
-
-    // Draw constellation lines
-    ctx.lineWidth = .75; // Adjust line thickness as desired
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; // Adjust opacity as desired
-
-    for (let i = 0; i < constellationStars.length - 1; i++) {
-        ctx.beginPath();
-        ctx.moveTo(constellationStars[i].x, constellationStars[i].y);
-        ctx.lineTo(constellationStars[i + 1].x, constellationStars[i + 1].y);
-        ctx.stroke();
-    }
-
-    // Draw constellation label
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'; // Adjust opacity as desired
-    ctx.font = '12px Arial'; // Adjust font size and style as desired
-    const constellationName = 'Ursa Major'; // Replace with your desired constellation name
-
-    const textWidth = ctx.measureText(constellationName).width;
-    const textX = (constellationStars[0].x + constellationStars[2].x) / 2 - textWidth / 2;
-    const textY = constellationStars[0].y - 15; // Adjust vertical position as needed
-
-    ctx.fillText(constellationName, textX, textY);
 }
 
 function createMeteor(x, y, vx = 0, vy = 0) {
