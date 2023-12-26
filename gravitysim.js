@@ -29,7 +29,7 @@ let airplaneImage = new Image();
 airplaneImage.src = 'https://github.com/harveyspector64/Starry-Sky-Sim/blob/33a9f3026f150ac1157e6a81b61293fa6b19bf25/airplane747transparent.png?raw=true'; // Your airplane image URL
 
 let ufoImage = new Image();
-ufoImage.src = 'https://github.com/harveyspector64/Starry-Sky-Sim/blob/a7773cc4bf3463e5a93d2709144d9f781f4f8115/harveyspector_pixel_art_classic_UFO_side_view_transparent_backg_23989567-06df-47bb-a647-77138dd5bede.png'; // Your UFO image URL
+ufoImage.src = 'https://raw.githubusercontent.com/harveyspector64/Starry-Sky-Sim/main/harveyspector_pixel_art_classic_UFO_side_view_transparent_backg_23989567-06df-47bb-a647-77138dd5bede.png'; // Your UFO image URL
 
 // Create particles with random positions and zero initial velocity
 for (let i = 0; i < numParticles; i++) {
