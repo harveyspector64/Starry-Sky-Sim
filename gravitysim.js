@@ -56,8 +56,10 @@ let startX, startY;
 let currentObjectType = 'meteor'; // Default to 'meteor'
 
 function handlePan(event) {
+    if (currentObjectType !== 'meteor') return; // Ignore pan events if not in 'meteor' mode
+
     console.log('Pan event triggered', event);
-    const initialVelocityX = event.deltaX * 0.1; // Adjust this factor as needed
+    const initialVelocityX = event.deltaX * 0.1;
     const initialVelocityY = event.deltaY * 0.1;
     createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
 }
