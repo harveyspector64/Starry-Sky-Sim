@@ -201,11 +201,11 @@ function drawParticles() {
             ctx.fill();
         }
 
-        // Draw haze
+        /* // Draw haze
         const hazeOpacity = 0.05; // Adjust for desired transparency
         const hazeColor = 'rgba(255, 255, 255,' + hazeOpacity + ')'; // Light white for haze
         ctx.fillStyle = hazeColor;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, canvas.width, canvas.height); */
 
         // Draw constellation lines
         ctx.lineWidth = .75; // Adjust line thickness as desired
