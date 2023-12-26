@@ -56,13 +56,25 @@ let startX, startY;
 let currentObjectType = 'meteor'; // Default to 'meteor'
 
 function handlePan(event) {
-    if (currentObjectType !== 'meteor') return; // Ignore pan events if not in 'meteor' mode
-
-    console.log('Pan event triggered', event);
     const initialVelocityX = event.deltaX * 0.1;
     const initialVelocityY = event.deltaY * 0.1;
-    createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
+
+    if (currentObjectType === 'meteor') {
+        createMeteor(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
+    } else if (currentObjectType === 'airplane') {
+        createAirplane(event.center.x, event.center.y, initialVelocityX, initialVelocityY);
+    }
 }
+
+function handleTap(event) {
+    if (currentObjectType === 'meteor') {
+        createMeteor(event.center.x, event.center.y);
+    } else if (currentObjectType === 'airplane') {
+        createAirplane(event.center.x, event.center.y);
+    }
+}
+
+hammer.on('tap', handleTap);
 
 function handleInputStart(event) {
     console.log('handleInputstart event triggered', event);
@@ -208,7 +220,7 @@ function drawParticles() {
 
 function createMeteor(x, y, vx = 0, vy = 0) {
   // Define characteristics of the meteor
-  const meteorSpeed = 5; // Base speed of the meteor
+  const meteorSpeed = 4; // Base speed of the meteor
   const tailLength = 50; // Number of particles in the meteor's tail
   const tailSizeDecrement = 0.95; // Factor by which the tail particle size decreases
   const initialTailSize = 2; // Initial size of the tail particles
